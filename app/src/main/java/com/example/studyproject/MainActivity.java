@@ -3,6 +3,10 @@ package com.example.studyproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+
+import com.example.studyproject.component.ComponentActivity;
+import com.example.studyproject.design.DesignPatternActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,4 +15,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
+    /**
+     * 组件化
+     * */
+    public void onClickComponent(View view) {
+        ComponentActivity.start(this);
+    }
+
+    /**
+     * 设计模式
+     * */
+    public void onClickDesign(View view) {
+        DesignPatternActivity.start(this);
+    }
+
 }

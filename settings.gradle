@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':routermodel1', ':basercorelib'
 rootProject.name='StudyProject'
