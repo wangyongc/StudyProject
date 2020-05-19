@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.studyproject.Serialize.SerializeDemo;
 import com.example.studyproject.component.ComponentActivity;
 import com.example.studyproject.design.DesignPatternActivity;
 
@@ -30,4 +31,17 @@ public class MainActivity extends AppCompatActivity {
         DesignPatternActivity.start(this);
     }
 
+    /**
+     * 算法
+     * */
+    public void onClickArithmetic(View view) {
+        //ArithmeticDemo
+    }
+
+    /**
+     * 序列化
+     * */
+    public void onClickSerialize(View view) {
+        SerializeDemo.start(this);
+    }
 }

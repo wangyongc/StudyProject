@@ -20,6 +20,7 @@
 
         <activity android:name=".component.ComponentActivity"/>
         <activity android:name=".design.DesignPatternActivity" />
+        <activity android:name=".Serialize.SerializeDemo" />
     </application>
 
 </manifest>

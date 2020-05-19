@@ -28,6 +28,20 @@
             android:onClick="onClickDesign"
             />
 
+        <Button
+            android:id="@+id/btn_arithmetic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="算法"
+            android:onClick="onClickArithmetic"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="序列化"
+            android:onClick="onClickSerialize"
+            />
+
     </LinearLayout>
 
 
