@@ -1,6 +1,5 @@
 package com.example.studyproject.arithmetic;
 
-import com.example.studyproject.arithmetic.bean.ListNode;
 import com.example.studyproject.arithmetic.bean.Node;
 import com.example.studyproject.arithmetic.bean.TreeNode;
 
@@ -295,4 +294,6 @@ public class ArithmeticDemo {
         }
         return false;
     }
+
+
 }
