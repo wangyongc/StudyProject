@@ -1,5 +1,27 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'com.wyc.plugin'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        //maven 仓库地址
+        maven {
+            url '../asm_lifecycle_repo'
+        }
+    }
+    dependencies {
+        //版本
+        // groupName : pluginName : version
+        classpath 'cn.wyc.plugin:buildSrcNew:1.0.2'
+    }
+}
+
+wyc{
+    author "hahahaah"
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
@@ -26,6 +48,7 @@ android {
         }
     }
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

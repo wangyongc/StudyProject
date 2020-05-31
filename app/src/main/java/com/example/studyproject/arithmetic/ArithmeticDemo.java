@@ -20,9 +20,12 @@ public class ArithmeticDemo {
 //        test4();
 //          test5();
 
-        test6();
+//        test6();
 
 //        test7();
+
+        int[] element = new int[]{1,2,3,2,2,2,5,4,2};
+        majorityElement(element);
     }
 
     /**
@@ -293,6 +296,29 @@ public class ArithmeticDemo {
             return true;
         }
         return false;
+    }
+
+    public static int majorityElement(int[] nums) {
+
+        int middleSize = nums.length%2 == 0 ? nums.length/2 : nums.length/2+1;
+        Map<Integer,Integer> map = new HashMap();
+        for(int i = 0 ; i < nums.length ; i++){
+            int value = 0;
+            if (map.containsKey(nums[i])){
+                value = map.get(Integer.valueOf(nums[i]));
+            }
+            ++value;
+            map.put(nums[i],Integer.valueOf(value));
+        }
+
+        for(Map.Entry entry : map.entrySet()){
+            if((Integer)entry.getValue() >= middleSize){
+                return (Integer) entry.getKey();
+            }
+        }
+
+        return -1;
+
     }
 
 

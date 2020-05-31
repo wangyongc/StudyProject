@@ -6,12 +6,47 @@ import java.util.List;
 
 class Solution {
 
+    public static String TAG = "Solution";
+
+    public Solution(){
+        System.out.println("test Solution construct ..");
+    }
+
+    static {
+        System.out.println("test Solution static ..");
+    }
+
+    class NotStaticClass{
+        String TAG = "NotStaticClass";
+        public NotStaticClass(){
+            System.out.println("test NotStaticClass  construct..");
+        }
+    }
+
+    static class StaticClass{
+        private static String aaa = "aaa";
+        private static StaticClass TAG = new StaticClass();
+        static {
+            System.out.println("test StaticClass static TAG = " + TAG);
+        }
+        public StaticClass(){
+            System.out.println("test StaticClass  construct TAG = " +TAG);
+        }
+
+
+    }
+
     public static void main(String[] args) {
         //[[1,2],[2,1],[1,0],[0,0],[0,1],[2,0],[1,1]]
-        int[][] moves = new int[][]{{1,2},{2,1},{1,0},{0,0},{0,1},{2,0},{1,1}};
-        String result = tictactoe(moves);
-        System.out.println("result = " + result);
+//        int[][] moves = new int[][]{{1,2},{2,1},{1,0},{0,0},{0,1},{2,0},{1,1}};
+//        String result = tictactoe(moves);
+//        System.out.println("result = " + result);
+        String staticClass = StaticClass.aaa;
+
+
     }
+
+
 
     public static String tictactoe(int[][] moves) {
 
