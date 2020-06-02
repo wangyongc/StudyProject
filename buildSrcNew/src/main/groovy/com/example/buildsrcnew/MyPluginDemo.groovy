@@ -11,9 +11,9 @@ class MyPluginDemo implements Plugin<Project>{
         project.afterEvaluate {
             println "Hello ${extension.author}"
         }
-
-        def transeform = new CustomTransform()
+        println "开始注册自定义transform"
         def baseExtension = project.extensions.getByType(BaseExtension)
-        baseExtension.registerTransform(transeform)
+        baseExtension.registerTransform(new CustomTransform())
+        println "注册自定义transform结束"
     }
 }

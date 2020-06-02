@@ -1,7 +1,7 @@
 package com.example.buildsrcnew
 
 import com.android.build.api.transform.DirectoryInput
-import com.android.build.api.transform.JarInput
+import com.android.build.api.transform.Format
 import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.Transform
 import com.android.build.api.transform.TransformException
@@ -10,21 +10,32 @@ import com.android.build.api.transform.TransformInvocation
 import com.android.build.api.transform.TransformOutputProvider
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
+import groovy.io.FileType
+
+
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.ClassWriter
 
 
 class CustomTransform extends Transform{
+
     @Override
     String getName() {
+        println "CustomTransform : getName"
         return "CustomTransform"
     }
 
     @Override
     Set<QualifiedContent.ContentType> getInputTypes() {
+        println "CustomTransform : getInputTypes"
         return TransformManager.CONTENT_CLASS
     }
 
     @Override
     Set<? super QualifiedContent.Scope> getScopes() {
+        println "CustomTransform : getScopes"
+
         return TransformManager.SCOPE_FULL_PROJECT
     }
 
@@ -35,53 +46,81 @@ class CustomTransform extends Transform{
 
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        super.transform(transformInvocation)
+//        super.transform(transformInvocation)
 
-
-        System.out.println(TAG + ":transform() start ...")
+        println "CustomTransform :transform() start ..."
 
         //获取所有 .class 文件
         Collection<TransformInput> inputCollection = transformInvocation.inputs
         TransformOutputProvider outputProvider = transformInvocation.outputProvider
 
+//        inputCollection.each { TransformInput transformInput ->
+//            println("CustomTransform :transform() inputCollection.each ")
+//
+//            transformInput.directoryInputs.each { DirectoryInput directoryInput ->
+//                File dir = directoryInput.file
+//
+//                println("CustomTransform :transform() transformInput.directoryInputs.each ")
+//
+//                if (dir) {
+//                    println("CustomTransform :transform() transformInput.directoryInputs.each -> dir ")
+//
+//                    dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) { File file ->
+//                        println("find class: " + file.name)  // ④
+//                    }
+//                }
+//
+//            }
+//        }
+
         inputCollection.each { TransformInput transformInput ->
-            System.out.println(TAG + ":transform() inputCollection.each ")
+            println("CustomTransform :transform() inputCollection.each ")
 
             transformInput.directoryInputs.each { DirectoryInput directoryInput ->
                 File dir = directoryInput.file
 
-                System.out.println(TAG + ":transform() transformInput.directoryInputs.each ")
+                println("CustomTransform :transform() transformInput.directoryInputs.each ")
 
                 if (dir) {
-                    System.out.println(TAG + ":transform() transformInput.directoryInputs.each -> dir ")
+                    println("CustomTransform :transform() transformInput.directoryInputs.each -> dir ")
 
                     dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) { File file ->
-                        System.out.println("find class: " + file.name)  // ④
+                        println("CustomTransform : find class: " + file.name)
+
+                        //对class文件进行读取与解析
+                        ClassReader classReader = new ClassReader(file.bytes)
+
+                        // 对class文件写入
+                        ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
+
+                        //访问class文件相应内容、解析到某一个结构就会通知到 ClassVisitor 内部方法
+                        ClassVisitor classVisitor = new LifecycleClassVisitor(classWriter)
+
+                        // 依次调用 classVisitor内部方法
+                        classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
+
+                        byte[] bytes = classWriter.toByteArray()
+
+                        //通过文件流写入方式覆盖掉原先的内容，实现class文件的改写。
+                        println("CustomTransform : output path: " + file.path)
+                        FileOutputStream fis = new FileOutputStream(file.path)
+                        fis.write(bytes)
+                        fis.close()
+
                     }
                 }
+                def dest = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes,
+                        directoryInput.scopes, Format.DIRECTORY)
+                FileUtils.copyDirectory(directoryInput.file, dest)
+
 
             }
+
+            transformInput.jarInputs.each {
+                File destJar = outputProvider.getContentLocation(it.name, it.contentTypes,
+                        it.scopes, Format.JAR)
+                FileUtils.copyFile(it.file, destJar)
+            }
         }
-
-//                InputStream inputStream = new FileInputStream(dest)
-//                ClassReader reader = new ClassReader(inputStream)                         // 1. 创建 ClassReader 读入 .class 文件到内存中
-//                ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS)    // 2. 创建 ClassWriter 对象，将操作之后的字节码的字节数组回写
-//                ClassVisitor change = new ChangeVisitor(writer)                           // 3. 创建自定义的 ClassVisitor 对象
-//                reader.accept(change, ClassReader.EXPAND_FRAMES)                          // 4. 将 ClassVisitor 对象传入 ClassReader 中
-//
-//                Class clazz = new MyClassLoader().defineClass(className, writer.toByteArray())
-//                Object personObj = clazz.newInstance()
-//                Method nameMethod = clazz.getDeclaredMethod("onCreate", null)
-//                nameMethod.invoke(personObj, null)
-//                System.out.println("transform Success!")
-//                byte[] code = writer.toByteArray()                                                             // 获取修改后的 class 文件对应的字节数组
-//                try {
-//                    FileOutputStream fos = new FileOutputStream(dest)    // 将二进制流写到本地磁盘上
-//                    fos.write(code)
-//                    fos.close()
-//                } catch (IOException e) {
-//                    e.printStackTrace()
-//                }
-
     }
 }

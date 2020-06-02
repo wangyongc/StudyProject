@@ -14,7 +14,7 @@ buildscript {
     dependencies {
         //版本
         // groupName : pluginName : version
-        classpath 'cn.wyc.plugin:buildSrcNew:1.0.2'
+        classpath 'cn.wyc.plugin:buildSrcNew:1.1.1'
     }
 }
 
@@ -47,6 +47,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 

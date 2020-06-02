@@ -1,11 +1,12 @@
 package com.example.buildsrcnew;
 
-import groovyjarjarasm.asm.MethodVisitor;
-import groovyjarjarasm.asm.Opcodes;
+
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 public class LifecycleMethodVisitor extends MethodVisitor {
 
-    private static final String TAG = "LifecycleMethodVisitor";
+    private static final String TAG = "com.example.buildsrcnew.LifecycleMethodVisitor";
 
     private String className,methodName;
 

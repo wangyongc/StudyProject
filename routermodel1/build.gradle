@@ -24,7 +24,7 @@ android {
         }
 
 
-        resourcePrefix "login_"
+//        resourcePrefix "login_"
 
         //作为单独工程，需要设置applicationID
         if (isLoginAsModule.toBoolean()) {
@@ -53,6 +53,10 @@ android {
                 }
             }
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
 }
