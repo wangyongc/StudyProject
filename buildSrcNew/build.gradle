@@ -1,6 +1,7 @@
 //依赖 groovy 和 maven 插件
 apply plugin: 'groovy'
 apply plugin: 'maven'
+
 repositories {
     google()
     jcenter()
@@ -16,12 +17,13 @@ dependencies {
     //依赖 ASM库文件
     implementation 'org.ow2.asm:asm:8.0.1'
     implementation 'org.ow2.asm:asm-commons:8.0.1'
+
 }
 
 // maven仓库group名称
 group = 'cn.wyc.plugin'
 // maven仓库插件版本号
-version = '1.1.1'
+version = '1.1.2'
 
 //maven 仓库发布
 uploadArchives{

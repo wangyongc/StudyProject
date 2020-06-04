@@ -14,7 +14,7 @@ buildscript {
     dependencies {
         //版本
         // groupName : pluginName : version
-        classpath 'cn.wyc.plugin:buildSrcNew:1.1.1'
+        classpath 'cn.wyc.plugin:buildSrcNew:1.1.2'
     }
 }
 

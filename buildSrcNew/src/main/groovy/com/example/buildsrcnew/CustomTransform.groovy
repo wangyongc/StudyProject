@@ -10,6 +10,7 @@ import com.android.build.api.transform.TransformInvocation
 import com.android.build.api.transform.TransformOutputProvider
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
+import com.example.buildsrcnew.parse.LifecycleClassParseVisitor
 import groovy.io.FileType
 
 
@@ -94,7 +95,7 @@ class CustomTransform extends Transform{
                         ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
 
                         //访问class文件相应内容、解析到某一个结构就会通知到 ClassVisitor 内部方法
-                        ClassVisitor classVisitor = new LifecycleClassVisitor(classWriter)
+                        ClassVisitor classVisitor = new LifecycleClassParseVisitor(classWriter)
 
                         // 依次调用 classVisitor内部方法
                         classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
